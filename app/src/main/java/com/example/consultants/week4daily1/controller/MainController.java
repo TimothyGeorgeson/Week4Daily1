@@ -31,6 +31,11 @@ public class MainController {
         personList.add(person);
     }
 
+    public void clearList()
+    {
+        personList.clear();
+    }
+
     public ArrayList<Person> getPersonList()
     {
         return this.personList;

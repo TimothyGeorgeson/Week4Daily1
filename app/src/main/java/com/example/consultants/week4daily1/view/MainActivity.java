@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void searchUsers(View view) {
+        MainController.getInstance().clearList();
         progressBar.setVisibility(View.VISIBLE);
         okhttpHelper.execute(gender, country);
     }
