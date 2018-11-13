@@ -1,13 +1,12 @@
 package com.example.consultants.week4daily1.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.consultants.week4daily1.model.Person;
-import com.example.consultants.week4daily1.view.RecyclerViewAdapter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,20 +17,17 @@ import okhttp3.Request;
 public class SearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Person>> {
     public static final String TAG = SearchAsyncTask.class.getSimpleName() + "_TAG";
 
-    RecyclerView rvPersonList;
-    RecyclerViewAdapter adapter;
-    RecyclerView.LayoutManager layoutManager;
-
     OkHttpClient client;
     Request request;
     Context context;
+    ArrayList<Person> personList;
 
-    public SearchAsyncTask(OkHttpClient client, Request request, Context context, RecyclerView rvPersonList)
+    public SearchAsyncTask(OkHttpClient client, Request request, Context context, ArrayList<Person> personList)
     {
         this.client = client;
         this.request = request;
         this.context = context;
-        this.rvPersonList = rvPersonList;
+        this.personList = personList;
     }
 
     @Override
@@ -47,7 +43,7 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Person
         try {
             String response = client.newCall(request).execute().body().string();
 
-            return RandomParser.generatePersons(response);
+            return RandomParser.generatePersons(response, personList);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -60,14 +56,10 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Person
     protected void onPostExecute(ArrayList<Person> personList) {
         super.onPostExecute(personList);
 
-        adapter = new RecyclerViewAdapter(personList);
-        layoutManager = new LinearLayoutManager(context);
-        rvPersonList.setAdapter(adapter);
-        rvPersonList.setLayoutManager(layoutManager);
-
-        for (int i = 0; i < personList.size(); i++) {
-            Log.d(TAG, "PostExecute: " + personList.get(i).toString());
-        }
+        Intent intent = new Intent();
+        intent.setAction(Person.PERSON_LIST);
+        intent.putParcelableArrayListExtra(Person.PERSON_LIST, personList);
+        context.sendBroadcast(intent);
     }
 
     @Override

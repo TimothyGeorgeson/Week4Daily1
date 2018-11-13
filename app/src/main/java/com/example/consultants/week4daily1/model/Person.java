@@ -1,8 +1,12 @@
 package com.example.consultants.week4daily1.model;
 
 import android.graphics.Bitmap;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Person {
+public class Person implements Parcelable {
+    public static final String PERSON_LIST = "personList";
+
     private Bitmap image;
     private String name;
     private String age;
@@ -65,6 +69,41 @@ public class Person {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        image.writeToParcel(dest, 0);
+        dest.writeString(name);
+        dest.writeString(age);
+        dest.writeString(gender);
+        dest.writeString(country);
+    }
+
+    // Creator
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public Person createFromParcel(Parcel in) {
+            return new Person(in);
+        }
+
+        public Person[] newArray(int size) {
+            return new Person[size];
+        }
+    };
+
+    // "De-parcel object
+    public Person(Parcel in) {
+        image = Bitmap.CREATOR.createFromParcel(in);
+        name = in.readString();
+        age = in.readString();
+        gender = in.readString();
+        country = in.readString();
     }
 }
 

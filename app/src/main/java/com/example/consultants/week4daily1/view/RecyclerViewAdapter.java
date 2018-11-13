@@ -15,7 +15,12 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>{
 
+    private static final int ITEM = 0;
+    private static final int LOADING = 1;
     List<Person> personList;
+
+    //flag for progress bar
+    private boolean isLoadingAdded = false;
 
     public RecyclerViewAdapter(List<Person> personList) {
         this.personList = personList;
@@ -42,8 +47,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return (position == personList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+    }
+
+    @Override
     public int getItemCount() {
-        return personList.size();
+        return personList == null ? 0 : personList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -15,9 +15,7 @@ import java.util.ArrayList;
 
 public class RandomParser {
 
-    public static ArrayList<Person> generatePersons(String responseStr) {
-
-        ArrayList<Person> personList = new ArrayList<>();
+    public static ArrayList<Person> generatePersons(String responseStr, ArrayList<Person> personList) {
 
         JSONObject response = null;
         JSONObject user = null;
