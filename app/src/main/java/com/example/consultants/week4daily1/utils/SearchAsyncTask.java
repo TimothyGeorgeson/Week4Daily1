@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.example.consultants.week4daily1.R;
 import com.example.consultants.week4daily1.model.Person;
 import com.example.consultants.week4daily1.view.RecyclerViewAdapter;
 

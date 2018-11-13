@@ -82,4 +82,61 @@ public class DisplayUtil {
         }
         return result;
     }
+
+    //converts country name to code
+    public static String countryToCode(String country)
+    {
+        String result = "";
+        switch (country) {
+            case "Australia":
+                result = "AU";
+                break;
+            case "Brazil":
+                result = "BR";
+                break;
+            case "Canada":
+                result = "CA";
+                break;
+            case "China":
+                result = "CH";
+                break;
+            case "Germany":
+                result = "DE";
+                break;
+            case "Denmark":
+                result = "DK";
+                break;
+            case "Spain":
+                result = "ES";
+                break;
+            case "Finland":
+                result = "FI";
+                break;
+            case "France":
+                result = "FR";
+                break;
+            case "Great Britain":
+                result = "GB";
+                break;
+            case "Ireland":
+                result = "IE";
+                break;
+            case "Iran":
+                result = "IR";
+                break;
+            case "Netherlands":
+                result = "NL";
+                break;
+            case "New Zealand":
+                result = "NZ";
+                break;
+            case "Turkey":
+                result = "TR";
+                break;
+            case "United States":
+                result = "US";
+                break;
+        }
+        return result;
+    }
 }
