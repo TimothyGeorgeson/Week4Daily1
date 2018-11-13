@@ -27,11 +27,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         View view;
-        if (viewType == LOADING)
+        if (viewType == LOADING) //if loading show progress bar
         {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_progress, viewGroup, false);
         }
-        else
+        else //show regular list item
         {
             view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
         }
@@ -43,6 +43,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder viewHolder, int i) {
         Person person = personList.get(i);
 
+        //bind views for regular item layout
         if(getItemViewType(i) == ITEM) {
             viewHolder.ivImage.setImageBitmap(person.getImage());
             viewHolder.tvName.setText((person.getName()));

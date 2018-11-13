@@ -22,6 +22,7 @@ public class OkhttpHelper {
 
     public void execute(String gender, String country) {
 
+        //modifies URL based on gender, country selections
         String URL = NetworkHelper.RANDOM_USER_URL + "?results=20&gender=" + gender.toLowerCase() +
                 "&nat=" + DisplayUtil.countryToCode(country);
 
@@ -29,6 +30,7 @@ public class OkhttpHelper {
                 .url(URL)
                 .build();
 
+        //sends request with URL to asyncTask
         SearchAsyncTask asyncTask = new SearchAsyncTask(client, request, context);
         asyncTask.execute();
     }

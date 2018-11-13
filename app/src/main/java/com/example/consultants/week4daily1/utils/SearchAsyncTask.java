@@ -38,8 +38,10 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Person
 
         Log.d(TAG, "doInBackground: ");
         try {
+            //performs network call to retrieve data
             String response = client.newCall(request).execute().body().string();
 
+            //parses response data
             return RandomParser.generatePersons(response);
 
         } catch (IOException e) {
@@ -53,6 +55,7 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Person
     protected void onPostExecute(ArrayList<Person> personList) {
         super.onPostExecute(personList);
 
+        //when AsyncTask is finished, send broadcast to let MainActivity know
         Intent intent = new Intent();
         intent.setAction(Person.PERSON_LIST);
         context.sendBroadcast(intent);

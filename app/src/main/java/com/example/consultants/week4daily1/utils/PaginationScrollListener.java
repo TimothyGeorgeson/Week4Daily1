@@ -11,6 +11,7 @@ public abstract class PaginationScrollListener extends RecyclerView.OnScrollList
         this.layoutManager = layoutManager;
     }
 
+    //checks if scroll position is at the bottom
     @Override
     public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
         super.onScrolled(recyclerView, dx, dy);

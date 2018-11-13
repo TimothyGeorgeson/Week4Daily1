@@ -21,8 +21,6 @@ import com.example.consultants.week4daily1.controller.MainController;
 import com.example.consultants.week4daily1.model.Person;
 import com.example.consultants.week4daily1.utils.PaginationScrollListener;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName() + "_TAG";
 
@@ -110,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         okhttpHelper.execute(gender, country);
     }
 
+    //broadcast receiver to hear signals once AsyncTask is complete
     private class MyBroadcastReceiver extends BroadcastReceiver {
 
         @Override
@@ -120,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             rvPersonList.setAdapter(adapter);
             rvPersonList.setLayoutManager(layoutManager);
 
+            //scrollListener, if scrolled to bottom, will load more items
             rvPersonList.addOnScrollListener(new PaginationScrollListener(layoutManager) {
                 @Override
                 protected void loadMoreItems() {
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //performs another okhttp call to load more data
     private void loadNextPage() {
 
         Log.d(TAG, "loadNextPage: ");
