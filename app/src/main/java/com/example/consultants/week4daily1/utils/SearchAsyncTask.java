@@ -2,9 +2,11 @@ package com.example.consultants.week4daily1.utils;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
+
+import com.example.consultants.week4daily1.model.Person;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -33,7 +35,13 @@ public class SearchAsyncTask extends AsyncTask {
         Log.d(TAG, "doInBackground: ");
         try {
             String response = client.newCall(request).execute().body().string();
-            Log.d(TAG, "execute: " + RandomParser.parseName(response));
+
+            ArrayList<Person> personList = RandomParser.generatePersons(response);
+
+            for (int i = 0; i < personList.size(); i++) {
+                Log.d(TAG, "execute: " + personList.get(i).toString());
+            }
+
             return response;
         } catch (IOException e) {
             e.printStackTrace();

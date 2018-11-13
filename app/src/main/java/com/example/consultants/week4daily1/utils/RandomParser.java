@@ -1,30 +1,83 @@
 package com.example.consultants.week4daily1.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
+
+import com.example.consultants.week4daily1.model.Person;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+
 public class RandomParser {
 
-    private static String title;
-    private static String first;
-    private static String last;
+    public static ArrayList<Person> generatePersons(String responseStr) {
 
-    public static String parseName(String responseStr) {
+        ArrayList<Person> personList = new ArrayList<>();
 
         JSONObject response = null;
+        JSONObject user = null;
+        JSONObject picture = null;
+        JSONObject name = null;
+        JSONObject dob = null;
+
+        String title = "";
+        String first = "";
+        String last = "";
+        String personName = "";
+        String age = "";
+        String gender = "";
+        String country = "";
+
         try {
             response = new JSONObject(responseStr);
             JSONArray results = response.getJSONArray("results");
-            JSONObject user = (JSONObject) results.get(0);
-            JSONObject name = user.getJSONObject("name");
-            title = name.getString("title");
-            first = name.getString("first");
-            last = name.getString("last");
+
+            for (int i = 0; i < results.length(); i++) {
+                user = (JSONObject) results.get(i);
+
+                //get picture URL and convert to bitmap
+                picture = user.getJSONObject("picture");
+                String urlPicture = picture.getString("medium");
+                Bitmap bmImage = null;
+                try {
+                    InputStream in = new java.net.URL(urlPicture).openStream();
+                    bmImage = BitmapFactory.decodeStream(in);
+                } catch (Exception e) {
+                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+
+                //get name, and convert to camel case
+                name = user.getJSONObject("name");
+                title = name.getString("title");
+                first = name.getString("first");
+                last = name.getString("last");
+                personName = DisplayUtil.convertToCamelCase(title + " " + first + " " + last);
+
+                //get age
+                dob = user.getJSONObject("dob");
+                age = dob.getString("age");
+
+                //get gender
+                gender = DisplayUtil.convertToCamelCase(user.getString("gender"));
+
+                //get country
+                country = DisplayUtil.codeToCountry(user.getString("nat"));
+
+                //create a person object and add to personList
+                Person person = new Person(bmImage, personName, age, gender, country);
+                personList.add(person);
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return title + " " + first + " " + last;
+        return personList;
     }
 }
