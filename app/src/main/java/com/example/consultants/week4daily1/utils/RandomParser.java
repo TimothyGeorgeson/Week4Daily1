@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.example.consultants.week4daily1.controller.MainController;
 import com.example.consultants.week4daily1.model.Person;
 
 import org.json.JSONArray;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 public class RandomParser {
 
-    public static ArrayList<Person> generatePersons(String responseStr, ArrayList<Person> personList) {
+    public static ArrayList<Person> generatePersons(String responseStr) {
 
         JSONObject response = null;
         JSONObject user = null;
@@ -67,15 +68,14 @@ public class RandomParser {
                 //get country
                 country = DisplayUtil.codeToCountry(user.getString("nat"));
 
-                //create a person object and add to personList
-                Person person = new Person(bmImage, personName, age, gender, country);
-                personList.add(person);
+                //add person to personList in controller
+                MainController.getInstance().addPerson(bmImage, personName, age, gender, country);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        return personList;
+        return MainController.getInstance().getPersonList();
     }
 }

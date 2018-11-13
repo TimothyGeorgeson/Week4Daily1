@@ -17,6 +17,7 @@ import android.widget.Spinner;
 
 import com.example.consultants.week4daily1.R;
 import com.example.consultants.week4daily1.client.OkhttpHelper;
+import com.example.consultants.week4daily1.controller.MainController;
 import com.example.consultants.week4daily1.model.Person;
 import com.example.consultants.week4daily1.utils.PaginationScrollListener;
 
@@ -37,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
     String gender;
     String country;
 
-    private static final int PAGE_START = 0;
     private boolean isLoading = false;
-    private int currentPage = PAGE_START;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,18 +107,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void searchUsers(View view) {
         progressBar.setVisibility(View.VISIBLE);
-
-        ArrayList<Person> personList = new ArrayList<>();
-        okhttpHelper.execute(gender, country, personList);
+        okhttpHelper.execute(gender, country);
     }
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final ArrayList<Person> personList = intent.getParcelableArrayListExtra(Person.PERSON_LIST);
 
-            adapter = new RecyclerViewAdapter(personList);
+            adapter = new RecyclerViewAdapter(MainController.getInstance().getPersonList());
             layoutManager = new LinearLayoutManager(context);
             rvPersonList.setAdapter(adapter);
             rvPersonList.setLayoutManager(layoutManager);
@@ -128,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 protected void loadMoreItems() {
                     isLoading = true;
-                    currentPage += 1; //Increment page index to load the next one
-                    loadNextPage(personList);
+                    loadNextPage();
                 }
 
                 @Override
@@ -141,13 +136,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void loadNextPage(ArrayList<Person> personList) {
+    private void loadNextPage() {
 
-        //when scroll position is at bottom of list
-        //this is called repeatedly, and crashes trying to send data so large
-        //even with isLoading flags, wasn't able to figure this out yet.
         Log.d(TAG, "loadNextPage: ");
-        //okhttpHelper.execute(gender, country, personList);
+        okhttpHelper.execute(gender, country);
 
         isLoading = false;
     }

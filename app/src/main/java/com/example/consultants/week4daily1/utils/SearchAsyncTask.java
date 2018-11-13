@@ -3,7 +3,6 @@ package com.example.consultants.week4daily1.utils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.consultants.week4daily1.model.Person;
@@ -20,14 +19,12 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Person
     OkHttpClient client;
     Request request;
     Context context;
-    ArrayList<Person> personList;
 
-    public SearchAsyncTask(OkHttpClient client, Request request, Context context, ArrayList<Person> personList)
+    public SearchAsyncTask(OkHttpClient client, Request request, Context context)
     {
         this.client = client;
         this.request = request;
         this.context = context;
-        this.personList = personList;
     }
 
     @Override
@@ -43,7 +40,7 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Person
         try {
             String response = client.newCall(request).execute().body().string();
 
-            return RandomParser.generatePersons(response, personList);
+            return RandomParser.generatePersons(response);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -58,7 +55,6 @@ public class SearchAsyncTask extends AsyncTask<String, Integer, ArrayList<Person
 
         Intent intent = new Intent();
         intent.setAction(Person.PERSON_LIST);
-        intent.putParcelableArrayListExtra(Person.PERSON_LIST, personList);
         context.sendBroadcast(intent);
     }
 

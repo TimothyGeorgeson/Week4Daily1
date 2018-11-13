@@ -19,18 +19,22 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private static final int LOADING = 1;
     List<Person> personList;
 
-    //flag for progress bar
-    private boolean isLoadingAdded = false;
-
     public RecyclerViewAdapter(List<Person> personList) {
         this.personList = personList;
     }
 
     @NonNull
     @Override
-    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
+    public RecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        View view;
+        if (viewType == LOADING)
+        {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_progress, viewGroup, false);
+        }
+        else
+        {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, viewGroup, false);
+        }
 
         return new ViewHolder(view);
     }
@@ -39,16 +43,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder viewHolder, int i) {
         Person person = personList.get(i);
 
-        viewHolder.ivImage.setImageBitmap(person.getImage());
-        viewHolder.tvName.setText((person.getName()));
-        viewHolder.tvAge.setText("Age: " + person.getAge());
-        viewHolder.tvGender.setText("Gender: " + person.getGender());
-        viewHolder.tvCountry.setText("Country: " + person.getCountry());
+        if(getItemViewType(i) == ITEM) {
+            viewHolder.ivImage.setImageBitmap(person.getImage());
+            viewHolder.tvName.setText((person.getName()));
+            viewHolder.tvAge.setText("Age: " + person.getAge());
+            viewHolder.tvGender.setText("Gender: " + person.getGender());
+            viewHolder.tvCountry.setText("Country: " + person.getCountry());
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return (position == personList.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
+        return (position == personList.size() - 1) ? LOADING : ITEM;
     }
 
     @Override
