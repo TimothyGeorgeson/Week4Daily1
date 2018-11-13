@@ -14,15 +14,14 @@ public class MainActivity extends AppCompatActivity {
 
     private OkhttpHelper okhttpHelper;
     RecyclerView rvPersonList;
-    RecyclerViewAdapter adapter;
-    RecyclerView.LayoutManager layoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        rvPersonList = findViewById(R.id.rvPersonList);
 
-        okhttpHelper = new OkhttpHelper();
+        okhttpHelper = new OkhttpHelper(getApplicationContext(), rvPersonList);
 
         //set up spinner for genders
         Spinner spGender = (Spinner) findViewById(R.id.spGender);
